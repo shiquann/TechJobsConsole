@@ -2,6 +2,9 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System;
+using System.Text.RegularExpressions;
+
 
 namespace TechJobsConsole
 {
@@ -15,7 +18,7 @@ namespace TechJobsConsole
             LoadData();
             return AllJobs;
         }
-
+        
         /*
          * Returns a list of all values contained in a given column,
          * without duplicates. 
@@ -57,6 +60,26 @@ namespace TechJobsConsole
 
             return jobs;
         }
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            LoadData(); ;
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+            foreach (Dictionary<string, string > row in AllJobs)
+            {
+                foreach (var column in row)
+                {
+                     if (Regex.IsMatch(value, column.Value, RegexOptions.IgnoreCase))
+                        {
+                            jobs.Add(row);
+                        }
+                }
+                
+          
+            }
+            return jobs;
+            
+        }
+
 
         /*
          * Load and parse data from job_data.csv
@@ -138,5 +161,6 @@ namespace TechJobsConsole
 
             return rowValues.ToArray();
         }
+    
     }
 }
